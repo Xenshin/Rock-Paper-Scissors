@@ -1,47 +1,69 @@
 import tkinter as tk
+from tkinter import messagebox
 import random
 
-def game():
-    choices = ['rock', 'paper', 'scissors']
-    user_choice = choice.get()
-    computer_choice = random.choice(choices)
-    result.config(text="You chose {} and the computer chose {}".format(user_choice, computer_choice))
-    if user_choice == computer_choice:
-        result.config(text="It's a tie!")
-    elif (user_choice == 'rock' and computer_choice == 'scissors') or \
-         (user_choice == 'paper' and computer_choice == 'rock') or \
-         (user_choice == 'scissors' and computer_choice == 'paper'):
-        result.config(text="You win!")
-        user_wins.set(user_wins.get() + 1)
-    else:
-        result.config(text="Computer wins!")
-        computer_wins.set(computer_wins.get() + 1)
+def rock():
+    computer = random.choice(["rock", "paper", "scissors"])
+    if computer == "rock":
+        result = "Tie"
+    elif computer == "paper":
+        result = "Computer Wins"
+        computer_score[0] += 1
+    elif computer == "scissors":
+        result = "You Win"
+        user_score[0] += 1
+    messagebox.showinfo("Result", f"Your Choice: Rock\nComputer's Choice: {computer}\n{result}")
+
+def paper():
+    computer = random.choice(["rock", "paper", "scissors"])
+    if computer == "rock":
+        result = "You Win"
+        user_score[0] += 1
+    elif computer == "paper":
+        result = "Tie"
+    elif computer == "scissors":
+        result = "Computer Wins"
+        computer_score[0] += 1
+    messagebox.showinfo("Result", f"Your Choice: Paper\nComputer's Choice: {computer}\n{result}")
+
+def scissors():
+    computer = random.choice(["rock", "paper", "scissors"])
+    if computer == "rock":
+        result = "Computer Wins"
+        computer_score[0] += 1
+    elif computer == "paper":
+        result = "You Win"
+        user_score[0] += 1
+    elif computer == "scissors":
+        result = "Tie"
+    messagebox.showinfo("Result", f"Your Choice: Scissors\nComputer's Choice: {computer}\n{result}")
+
+def quit_game():
+    root.quit()
 
 root = tk.Tk()
-root.title("Rock, Paper, Scissors")
+root.title("Rock Paper Scissors")
+root.geometry("400x400")
 
-choice = tk.StringVar()
+user_score = [0]
+computer_score = [0]
 
-rock = tk.Radiobutton(root, text="Rock", value="rock", variable=choice)
-paper = tk.Radiobutton(root, text="Paper", value="paper", variable=choice)
-scissors = tk.Radiobutton(root, text="Scissors", value="scissors", variable=choice)
+rock_icon = tk.PhotoImage(file="images/rock.png")
+paper_icon = tk.PhotoImage(file="images/paper.png")
+scissors_icon = tk.PhotoImage(file="images/scissors.png")
 
-rock.pack()
-paper.pack()
-scissors.pack()
+rock_button = tk.Button(root, image=rock_icon, command=rock)
+paper_button = tk.Button(root, image=paper_icon, command=paper)
+scissors_button = tk.Button(root, image=scissors_icon, command=scissors)
 
-play_button = tk.Button(root, text="Play", command=game)
-play_button.pack()
+rock_button.pack(pady=20)
+paper_button.pack(pady=20)
+scissors_button.pack(pady=20)
 
-result = tk.Label(root)
-result.pack()
+score_label = tk.Label(root, text=f"Your Score: {user_score[0]}  Computer's Score: {computer_score[0]}")
+score_label.pack(pady=20)
 
-user_wins = tk.IntVar()
-computer_wins = tk.IntVar()
-
-user_wins_label = tk.Label(root, textvariable=user_wins)
-user_wins_label.pack()
-computer_wins_label = tk.Label(root, textvariable=computer_wins)
-computer_wins_label.pack()
+quit_button = tk.Button(root, text="Quit", command=quit_game)
+quit_button.pack(pady=20)
 
 root.mainloop()
